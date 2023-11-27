@@ -16,7 +16,7 @@ public class PostoServiceImpl implements PostoService {
     private PostoRepository postoRepository;
 
     @Override
-    public void createPosto(String _id, String nome, String endereco, String cnpj, String horarioFuncionamento, String telefone, String email, String senha) throws ConstraintViolationException, PostoCollectionException {
+    public void createPosto(String _id, String nome, String endereco, String horarioFuncionamento) throws ConstraintViolationException, PostoCollectionException {
         Optional<PostoModel> postoOptional = postoRepository.findByNome(nome);
         if (postoOptional.isPresent()) {
             throw new PostoCollectionException("Posto já existe");
