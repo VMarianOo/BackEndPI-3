@@ -5,5 +5,5 @@ import jakarta.validation.ConstraintViolationException;
 
 public interface PostoService {
 
-    public void createPosto(String nome, String endereco, String cnpj, String horarioFuncionamento, String telefone, String email, String senha) throws ConstraintViolationException, PostoCollectionException;
+    public void createPosto(String _id,String nome, String endereco, String cnpj, String horarioFuncionamento, String telefone, String email, String senha) throws ConstraintViolationException, PostoCollectionException;
 }

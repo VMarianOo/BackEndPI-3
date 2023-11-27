@@ -65,9 +65,7 @@ public class PostoController {
             /* postoToSave() é o método para salvar dados */
             postoToSave.setNome(posto.getNome() != null ? posto.getNome() : postoToSave.getNome());
             postoToSave.setEndereco(posto.getEndereco() != null ? posto.getEndereco() : postoToSave.getEndereco());
-            postoToSave.setTelefone(posto.getTelefone() != null ? posto.getTelefone() : postoToSave.getTelefone());
-            postoToSave.setEmail(posto.getEmail() != null ? posto.getEmail() : postoToSave.getEmail());
-            postoToSave.setCnpj(posto.getCnpj() != null ? posto.getCnpj() : postoToSave.getCnpj());
+            postoToSave.setHoraFuncionamento(posto.getHoraFuncionamento() != null ? posto.getHoraFuncionamento() : postoToSave.getHoraFuncionamento());
             postoToSave.setDataModificacao(new Date(System.currentTimeMillis()));
             postoRepository.save(postoToSave);
             return new ResponseEntity<>(postoToSave, HttpStatus.OK);

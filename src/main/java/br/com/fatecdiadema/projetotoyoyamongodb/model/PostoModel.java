@@ -19,7 +19,8 @@ import java.util.Date;
 public class PostoModel {
 
     @Id
-    private String id;
+    @Field(name = "_id")
+    private String _id;
 
     @Field(name = "nome")
     private String nome;
@@ -27,21 +28,14 @@ public class PostoModel {
     @Field(name = "endereco")
     private String endereco;
 
-    @Field(name = "telefone")
-    private String telefone;
-
-    @Field(name = "email")
-    private String email;
-
-    @Field(name = "senha")
-    private String senha;
-
-    @CNPJ
-    @Field(name = "cnpj")
-    private String cnpj;
-
     @Field(name = "horaFuncionamento")
     private String horaFuncionamento;
+
+    @Field(name = "latitude")
+    private double latitude;
+
+    @Field(name = "longitude")
+    private double longitude;
 
     @Field(name = "dataCriacao")
     private Date dataCriacao;

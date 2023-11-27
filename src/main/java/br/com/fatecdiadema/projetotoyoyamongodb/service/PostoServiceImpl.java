@@ -16,19 +16,16 @@ public class PostoServiceImpl implements PostoService {
     private PostoRepository postoRepository;
 
     @Override
-    public void createPosto(String nome, String endereco, String cnpj, String horarioFuncionamento, String telefone, String email, String senha) throws ConstraintViolationException, PostoCollectionException {
+    public void createPosto(String _id, String nome, String endereco, String cnpj, String horarioFuncionamento, String telefone, String email, String senha) throws ConstraintViolationException, PostoCollectionException {
         Optional<PostoModel> postoOptional = postoRepository.findByNome(nome);
         if (postoOptional.isPresent()) {
             throw new PostoCollectionException("Posto já existe");
         } else {
             PostoModel posto = new PostoModel();
+            posto.set_id(_id);
             posto.setNome(nome);
             posto.setEndereco(endereco);
-            posto.setCnpj(cnpj);
             posto.setHoraFuncionamento(horarioFuncionamento);
-            posto.setTelefone(telefone);
-            posto.setEmail(email);
-            posto.setSenha(senha);
             postoRepository.save(posto);
         }
     }
