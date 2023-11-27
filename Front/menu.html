@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en" style="margin-top: 0px;--bs-primary: #27ff04;--bs-primary-rgb: 39,255,4;--bs-secondary: #0a183d;--bs-secondary-rgb: 10,24,61;">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Home - Brand</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/styles.min.css">
+    <link rel="stylesheet" href="assets/css/animate.min.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            width: 100%;
+            height: 501px;
+        }
+    
+        #searchContainer {
+            position: absolute;
+            top: -49px; /* Ajuste conforme necessário para a posição desejada acima do mapa */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+    
+        #addressInput {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            flex: 1;
+            margin-right: 10px;
+        }
+    
+        #searchButton {
+            padding: 7px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+    
+        #suggestions {
+            position: absolute;
+            top: -9px; /* Aparecerá abaixo do #searchContainer */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            width: calc(100% - -5px); /* Ajuste para corresponder à largura da caixa de texto e da borda */
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+    
+        #suggestions div {
+            padding: 5px;
+            cursor: pointer;
+        }
+    
+        #suggestions div:hover {
+            background-color: #f0f0f0;
+        }
+    
+        #adicionarPontoBtn, #removerPontoBtn, #alterarDescricaoBtn {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body style="background: linear-gradient(#56cbaf 7%, #56cbaf 91%), var(--bs-form-valid-color);height: 1352.94px;">
+    <nav>
+        <!-- Start: gradient-navbar -->
+        <nav class="navbar navbar-expand-lg text-nowrap text-break fw-light text-start float-none visible navbar-dark" id="app-navbar" style="display: flex;background: linear-gradient(-32deg, #0b8827 0%, #a0ee9e 100%), rgb(94,191,104);">
+            <div class="container-fluid"><a class="navbar-brand" href="#"></a><img class="img-fluid d-md-flex m-auto justify-content-md-start" src="assets/img/Logo%201.svg" style="color: var(--bs-primary);width: 88px;transform: translate(65px);overflow: scroll;" loading="eager" width="88" height="55"><button data-bs-toggle="collapse" class="navbar-toggler border rounded-0" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse d-table float-start d-lg-flex d-xl-flex justify-content-lg-center justify-content-xl-center" data-aos="fade" data-aos-once="true" id="navcol-1" style="position: static;display: none;transform: translate(21px);margin: 0px;margin-right: 133px;padding: 0px;padding-right: 0px;height: 46px;width: 955px;font-size: 27px;font-family: Raleway, sans-serif;text-align: center;--bs-body-font-size: 0rem;">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item"><a class="nav-link active text-start" id="home" href="index.html" style="height: 76.5px;padding: 21px;margin-right: 6px;"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 24 24" width="1em" fill="currentColor" style="margin-bottom: 3px;">
+                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
+                                </svg>Home</a></li>
+                        <li class="nav-item"><a class="nav-link text-start" id="buscar" href="search.html" style="height: 76.5px;padding: 21px;margin-right: 6px;"><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 24 24" width="1em" fill="currentColor" style="margin-bottom: 2px;">
+                                    <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                                </svg>Buscar</a></li>
+                        <li class="nav-item"><a class="nav-link text-start" id="contato" href="login.html" style="height: 76.5px;padding: 21px;margin-right: 6px;"><i class="fa fa-sign-in" style="margin-bottom: 3px;margin-right: 5px;"></i>Login</a></li>
+                        <li class="nav-item"><a class="nav-link text-start" id="sobre" href="about.html" style="height: 76.5px;padding: 21px;margin-right: 6px;"><i class="icon ion-help-circled"></i>&nbsp;Sobre-nós</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav><!-- End: gradient-navbar -->
+    </nav><!-- Start: Div center-content -->
+    <div class="justify-content-center text-center"></div><!-- End: Div center-content -->
+    <h1 class="text-center text-white d-none d-lg-block site-heading"></h1>
+    <section class="page-section clearfix">
+        <div class="container">
+            <div class="intro"></div>
+        </div>
+    </section>
+    <section class="page-section cta" style="background: rgba(123,230,86,0.9);">
+        <!-- Start: 1 Row 3 Columns -->
+        <div class="container" style="background: url(&quot;assets/img/Captura%20de%20tela%202023-11-23%20072945.jpg&quot;) center / cover no-repeat, var(--swiper-theme-color);border-style: inset;">
+            <div class="row">
+                <div class="col-md-4">
+                    <div></div>
+                </div>
+                <div class="col-md-4">
+                    <!-- Start: Card Store -->
+                    <div class="card" style="width: 21rem;border-top-left-radius: 20px;border-top-right-radius: 20px;border-bottom-right-radius: 20px;border-bottom-left-radius: 20px;box-shadow: 2px 2px 16px 8px rgba(0,0,0,0.1);min-width: 300px;border-style: none;max-width: 100%;margin: 16px;"></div><!-- End: Card Store -->
+                    <!-- Start: Card Store -->
+                    <div class="card" style="width: 21rem;border-top-left-radius: 20px;border-top-right-radius: 20px;border-bottom-right-radius: 20px;border-bottom-left-radius: 20px;box-shadow: 2px 2px 16px 8px rgba(0,0,0,0.1);min-width: 300px;border-style: none;max-width: 100%;margin: 16px;">
+                        <div class="card-body d-flex flex-column justify-content-between" style="padding-bottom: 20px;height: 290px;"><label class="form-label" style="text-align: center;font-size: 19px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-person-circle" style="font-size: 26px;margin-right: 5px;margin-top: -1px;padding-top: 0px;margin-bottom: 4px;">
+                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
+                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
+                                </svg>Maria Clara<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="1em" viewBox="0 0 24 24" width="1em" fill="currentColor" style="margin-left: 95px;">
+                                    <g>
+                                        <rect fill="none" height="24" width="24"></rect>
+                                    </g>
+                                    <g>
+                                        <g>
+                                            <polygon points="17,17 22,12 17,7 15.59,8.41 18.17,11 9,11 9,13 18.17,13 15.59,15.59"></polygon>
+                                            <path d="M19,19H5V5h14v2h2V5c0-1.1-0.89-2-2-2H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.11,0,2-0.9,2-2v-2h-2V19z"></path>
+                                        </g>
+                                    </g>
+                                </svg></label><a id="adicionarPontoBtn" class="btn btn-primary d-flex d-xl-flex justify-content-center align-items-center justify-content-xl-center align-items-xl-center" role="button" data-bss-hover-animate="pulse" style="margin-top: 20px;background: var(--swiper-theme-color);border-style: none;padding-top: 8px;padding-bottom: 8px;box-shadow: 2px 2px 8px rgba(117,117,117,0.71);" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" style="color: rgb(255,255,255);font-size: 25px;margin-right: 7px;">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z" fill="currentColor"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7V11H7C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H11V17C11 17.5523 11.4477 18 12 18C12.5523 18 13 17.5523 13 17V13H17C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11H13V7Z" fill="currentColor"></path>
+                                </svg >Adicionar Posto</a><a
+                                id="alterarDescricaoBtn"  class="btn btn-primary d-flex d-xl-flex justify-content-center align-items-center justify-content-xl-center align-items-xl-center" role="button" data-bss-hover-animate="pulse" style="margin-top: 20px;background: #128C7E;border-style: none;padding-top: 8px;padding-bottom: 8px;box-shadow: 2px 2px 8px rgba(117,117,117,0.71);" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="1em" viewBox="0 0 24 24" width="1em" fill="currentColor" style="color: rgb(255,255,255);font-size: 25px;margin-right: 7px;">
+                                    
+                                    <g>
+                                        <rect fill="none" height="24" width="24"></rect>
+                                    </g>
+                                    <g>
+                                        <g>
+                                            <circle cx="19" cy="5" r="3"></circle>
+                                            <path d="M10.76 9.24 15 5 10.76.76 9.34 2.17 11.17 4H7.82C7.4 2.84 6.3 2 5 2 3.34 2 2 3.34 2 5c0 1.3.84 2.4 2 2.82v8.37C2.84 16.6 2 17.7 2 19c0 1.66 1.34 3 3 3s3-1.34 3-3c0-1.3-.84-2.4-2-2.82V7.82c.85-.31 1.51-.97 1.82-1.82h3.36L9.34 7.83l1.42 1.41z"></path>
+                                            <polygon points="10,19 10,22 13,22 19.26,15.74 16.26,12.74"></polygon>
+                                            <path d="M20.12 10.29c-.39-.39-1.02-.39-1.41 0l-1.38 1.38 3 3 1.38-1.38c.39-.39.39-1.02 0-1.41l-1.59-1.59z"></path>
+                                        </g>
+                                    </g>
+                                </svg>Editar Postos</a><a id="removerPontoBtn" class="btn btn-primary d-flex d-xl-flex justify-content-center align-items-center justify-content-xl-center align-items-xl-center" role="button" data-bss-hover-animate="pulse" style="margin-top: 20px;background: rgba(255,7,7,0.83);border-style: none;padding-top: 8px;padding-bottom: 8px;box-shadow: 2px 2px 8px rgba(117,117,117,0.71);" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 20 20" fill="none" style="color: rgb(255,255,255);font-size: 25px;margin-right: 4px;">
+
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18ZM8.70711 7.29289C8.31658 6.90237 7.68342 6.90237 7.29289 7.29289C6.90237 7.68342 6.90237 8.31658 7.29289 8.70711L8.58579 10L7.29289 11.2929C6.90237 11.6834 6.90237 12.3166 7.29289 12.7071C7.68342 13.0976 8.31658 13.0976 8.70711 12.7071L10 11.4142L11.2929 12.7071C11.6834 13.0976 12.3166 13.0976 12.7071 12.7071C13.0976 12.3166 13.0976 11.6834 12.7071 11.2929L11.4142 10L12.7071 8.70711C13.0976 8.31658 13.0976 7.68342 12.7071 7.29289C12.3166 6.90237 11.6834 6.90237 11.2929 7.29289L10 8.58579L8.70711 7.29289Z" fill="currentColor"></path>
+                                </svg>Remover Posto</a>
+                            <div></div>
+                        </div>
+                    </div><!-- End: Card Store -->
+                </div>
+                <div class="col-md-4">
+                    <div></div>
+                </div>
+            </div>
+        </div><!-- End: 1 Row 3 Columns -->
+        <!-- Start: 1 Row 1 Column -->
+        <div class="container" style="width: 1142px; margin-top: 66px; position: relative;">
+            <div id="map"></div>
+            <div id="searchContainer">
+                <input type="text" id="addressInput" placeholder="Digite o endereço">
+                <button id="searchButton">Buscar</button>
+            </div>
+            <div id="suggestions"></div>
+        </div><!-- End: 1 Row 1 Column --><!-- End: 1 Row 1 Column -->
+    </section>
+    <h1 style="text-align: center;">Conheça também:</h1>
+    <div>
+        <!-- Start: Articles Cards -->
+        <div class="container text-center justify-content-center m-auto py-4 py-xl-5">
+            <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3" style="width: 856px;height: 193px;margin-top: -20px;margin-left: 139px;margin-right: -19px;">
+                <div class="col">
+                    <div class="card"><img class="card-img-top w-100 d-block fit-cover" style="height: 156px;width: 312px;" src="assets/img/MiraiToyota%201.png"></div>
+                </div>
+                <div class="col">
+                    <div class="card"><img class="card-img-top w-100 d-block fit-cover" style="height: 156px;width: 312px;" src="assets/img/12ODS%201.png"></div>
+                </div>
+                <div class="col">
+                    <div class="card"><img class="card-img-top w-100 d-block fit-cover" style="height: 156px;width: 312px;" src="assets/img/MSaude%201.png"></div>
+                </div>
+            </div>
+        </div><!-- End: Articles Cards -->
+    </div>
+    <footer class="text-center footer text-faded py-5" style="background: rgba(61,58,57,0.9);margin-left: -6px;height: 171.5px;">
+        <div class="container">
+            <p class="m-0 small">Projeto TechNine</p>
+        </div>
+        <div id="pontos">
+            <ul id="listaPontos"></ul>
+        </div>
+    </footer>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/script.min.js"></script>
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="mapa.js"></script>
+    
+</body>
+
+</html>
